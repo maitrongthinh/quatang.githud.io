@@ -28,7 +28,7 @@
             const chat = document.getElementById("chat");
             chat.innerHTML += "<br><span class='user'>Bạn: " + input + "</span>";
 
-            const apiUrl = "https://api.chatanywhere.tech/v1/chat/completions"; // Endpoint dự đoán, cần kiểm tra tài liệu
+            const apiUrl = "https://api.chatanywhere.tech/v1/chat/completions"; // Kiểm tra và chỉnh sửa nếu cần; // Endpoint dự đoán, cần kiểm tra tài liệu
             const apiKey = "sk-6EDXXAhvjj5iCoXQzpC24YnbNnpz3HrwBlpxWyPY1ZiG0hjf"; // Thay bằng API key của bạn (OpenAI hoặc từ api.chatanywhere.tech)
             const headers = {
                 "Authorization": "Bearer " + apiKey,
