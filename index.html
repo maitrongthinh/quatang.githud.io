@@ -27,9 +27,9 @@
             if (!input) return;
             const chat = document.getElementById("chat");
             chat.innerHTML += "<br><span class='user'>Bạn: " + input + "</span>";
-
-            const apiUrl = "https://api.chatanywhere.tech/v1/chat/completions"; // Kiểm tra và chỉnh sửa nếu cần; // Endpoint dự đoán, cần kiểm tra tài liệu
-            const apiKey = "sk-6EDXXAhvjj5iCoXQzpC24YnbNnpz3HrwBlpxWyPY1ZiG0hjf"; // Thay bằng API key của bạn (OpenAI hoặc từ api.chatanywhere.tech)
+        
+            const apiUrl = "https://api.chatanywhere.tech/v1/chat/completions"; // Kiểm tra và chỉnh sửa endpoint
+            const apiKey = "your-actual-api-key-here"; // Thay bằng API key thật, giữ bí mật
             const headers = {
                 "Authorization": "Bearer " + apiKey,
                 "Content-Type": "application/json"
@@ -39,7 +39,7 @@
                 "messages": [{"role": "user", "content": input}],
                 "max_tokens": 50 // Giới hạn độ dài trả lời, giữ nhẹ
             });
-
+        
             try {
                 const response = await fetch(apiUrl, {
                     method: "POST",
