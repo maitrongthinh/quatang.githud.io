@@ -28,10 +28,17 @@
             const chat = document.getElementById("chat");
             chat.innerHTML += "<br><span class='user'>Bạn: " + input + "</span>";
 
-            const apiUrl = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distil";
-            const token = "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"; // Thay bằng token Hugging Face mới của bạn, giữ bí mật
-            const headers = { "Authorization": "Bearer " + token };
-            const body = JSON.stringify({ "inputs": input });
+            const apiUrl = "https://api.chatanywhere.tech/v1/chat/completions"; // Endpoint dự đoán, cần kiểm tra tài liệu
+            const apiKey = "sk-6EDXXAhvjj5iCoXQzpC24YnbNnpz3HrwBlpxWyPY1ZiG0hjf"; // Thay bằng API key của bạn (OpenAI hoặc từ api.chatanywhere.tech)
+            const headers = {
+                "Authorization": "Bearer " + apiKey,
+                "Content-Type": "application/json"
+            };
+            const body = JSON.stringify({
+                "model": "gpt-3.5-turbo", // Hoặc mô hình khác, kiểm tra tài liệu
+                "messages": [{"role": "user", "content": input}],
+                "max_tokens": 50 // Giới hạn độ dài trả lời, giữ nhẹ
+            });
 
             try {
                 const response = await fetch(apiUrl, {
@@ -43,7 +50,7 @@
                     throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
                 }
                 const data = await response.json();
-                const reply = data[0].generated_text || "Mình chưa hiểu, thử lại nhé!";
+                const reply = data.choices[0].message.content || "Mình chưa hiểu, thử lại nhé!";
                 chat.innerHTML += "<br><span class='ai'>AI: " + reply + "</span>";
             } catch (e) {
                 chat.innerHTML += "<br><span class='ai'>AI: Có lỗi rồi: " + e.message + "</span>";
