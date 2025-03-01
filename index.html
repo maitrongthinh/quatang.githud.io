@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat AI Siêu Nhẹ</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: monospace; margin: 10px; background-color: #f0f0f0; }
+        #chat { margin-top: 10px; max-height: 200px; overflow-y: auto; }
+        input, button { font-size: 16px; margin: 5px 0; }
+        .ai { color: blue; }
+        .user { color: green; }
+    </style>
+</head>
+<body>
+    <h3>Chat với AI</h3>
+    <form action="javascript:void(0);" onsubmit="sendMessage(event)">
+        <input type="text" id="input" placeholder="Nhập câu hỏi" required>
+        <button type="submit">Gửi</button>
+    </form>
+    <div id="chat">AI: Chào bạn! Hỏi mình gì nào?</div>
+
+    <script>
+        async function sendMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById("input").value;
+            if (!input) return;
+            const chat = document.getElementById("chat");
+            chat.innerHTML += "<br><span class='user'>Bạn: " + input + "</span>";
+
+            const apiUrl = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distil";
+            const token = "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"; // Thay bằng token Hugging Face mới của bạn, giữ bí mật
+            const headers = { "Authorization": "Bearer " + token };
+            const body = JSON.stringify({ "inputs": input });
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: headers,
+                    body: body
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+                }
+                const data = await response.json();
+                const reply = data[0].generated_text || "Mình chưa hiểu, thử lại nhé!";
+                chat.innerHTML += "<br><span class='ai'>AI: " + reply + "</span>";
+            } catch (e) {
+                chat.innerHTML += "<br><span class='ai'>AI: Có lỗi rồi: " + e.message + "</span>";
+            }
+            document.getElementById("input").value = "";
+        }
+    </script>
+</body>
+</html>
